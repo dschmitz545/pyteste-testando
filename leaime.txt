@@ -1,0 +1,88 @@
+precisa ter uma pasta tests
+os arquivos de teste precisam iniciar com test_.....
+
+pytest
+pytest .
+
+# modo verboso
+pytest -v
+
+# no diretório tests, precisa ter o arquivo __init__.py
+
+# sem criar o __init__.py na pasta test
+python -m pytest
+
+# para quando um teste falhar - Saída rápida
+pytest -x
+
+# Mostra saída no console(mostrar os prints)
+pytest -s
+
+# Filtra resultado, por qualquer parte do nome da função de teste
+pytest -k "nome_do_teste"
+
+# para para debugar quando der erro
+pytest --pdb
+
+# report em mode junit
+pytest --junitxml report.xml
+
+########################
+### Mark (Marcações) ###
+########################
+ajuda a montar grupos para testes especificos
+
+# na raiz do projeto criar arquivo
+pytest.ini
+
+# dentro do arquivo .ini
+-------------------------------------
+[pytest]
+markers = 
+    rabbit: mark test with rabbit
+    dog: mark test with dog
+-------------------------------------
+# no arquivo de test
+import pytest
+
+@pytest.mark.rabbit
+
+# para rodar
+pytest -m suatag
+
+# com modo verboso junto
+pytest -m suatag -v
+
+# invertendo
+pytest -m "not rabbit" -v
+
+
+######################
+### Tags Especiais ###
+######################
+
+@pytest.mark.skip(reason="not implemented") # skipa um teste
+pytest -rs  # mostra razaão e o teste skipado
+
+@pytest.mark.parametrize("entrada, esperado", [(5, "Only Five"), (10,"Only Five"), (15, "Three and Five"), (20,"Only Five"), (25,"Only Five")])
+def test_return_multiples_5(entrada, esperado):
+     assert multiplos(entrada) == esperado
+
+# exemplo de xfail
+# é esperado que esse teste falhe, se rodar no windows
+@pytest.mark.xfail(sys.platform == 'win32', reason="Roda apenas se for windows")
+def test_xfail_windows():
+    pass
+
+# exemplo de skipif
+# se a plataforma for windows, pula esse teste
+@pytest.mark.skipif(sys.platform == 'win32', reason="pula se não for windows")
+def test_skipif_windows():
+    pass
+
+pytest -m "meu_marcador"
+pytest -m "meu_marcador" -v     # com modo verboso junto
+
+################
+### Fixtures ###
+################
